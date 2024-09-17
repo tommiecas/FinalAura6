@@ -91,7 +91,7 @@ int32 AAuraCharacter::GetXP_Implementation() const
 	return AuraPlayerState->GetXP();
 }
 
-int32 AAuraCharacter::FindLevelForXP_Implementation(int32 InXP) const
+int32 AAuraCharacter::FindLevelForXP_Implementation(const int32 InXP) const
 {
 	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
@@ -105,35 +105,39 @@ int32 AAuraCharacter::GetPlayerLevel_Implementation()
 	return AuraPlayerState->GetLevel();
 }
 
-int32 AAuraCharacter::GetAttributePointsReward_Implementation(int32 Level) const
+int32 AAuraCharacter::GetAttributePointsReward_Implementation(const int32 Level) const
 {
 	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	return AuraPlayerState->LevelUpInfo->LevelUpInformation[Level].AttributePointReward;
 }
 
-int32 AAuraCharacter::GetSpellPointsReward_Implementation(int32 Level) const
+int32 AAuraCharacter::GetSpellPointsReward_Implementation(const int32 Level) const
 {
 	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	return AuraPlayerState->LevelUpInfo->LevelUpInformation[Level].SpellPointReward;
 }
 
-void AAuraCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
+void AAuraCharacter::AddToPlayerLevel_Implementation(const int32 InPlayerLevel)
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	AuraPlayerState->AddToLevel(InPlayerLevel);
 }
 
-void AAuraCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
+void AAuraCharacter::AddToAttributePoints_Implementation(const int32 InAttributePoints)
 {
-
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check(AuraPlayerState);
+	AuraPlayerState->AddToAttributePoints(InAttributePoints);
 }
 
-void AAuraCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
+void AAuraCharacter::AddToSpellPoints_Implementation(const int32 InSpellPoints)
 {
-
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check(AuraPlayerState);
+	AuraPlayerState->AddToSpellPoints(InSpellPoints);
 }
 
 void AAuraCharacter::InitAbilityActorInfo()
