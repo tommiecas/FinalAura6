@@ -7,6 +7,9 @@
 #include "AttributeMenuWidgetController.generated.h"
 
 class UAttributeInfo;
+struct FGameplayTag;
+struct FAuraAttributeInfo;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FAuraAttributeInfo&, Info);
 /**
  * 
@@ -26,6 +29,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Gameplay Ability System | Attributes")
 	FOnPlayerStatChangedSignature AttributePointsChangedDelegate;
 
+	UFUNCTION(BlueprintCallable)
+	void UpgradeAttribute(const FGameplayTag& AttributeTag);
+	
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttributeInfo> AttributeInfo;
