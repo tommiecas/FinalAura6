@@ -128,6 +128,20 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	/**
 	 ** Damage Types
 	 */
+	
+	GameplayTags.Passive_Ability1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Passive.Ability1"),
+		FString("Grants the User the Ability to learn their first Passive Ability")
+		);
+
+	GameplayTags.Passive_Ability2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Passive.Ability2"),
+		FString("Grants the User the Ability to learn their second Passive Ability")
+		);
+
+	/**
+	 ** Damage Types
+	 */
 
 	GameplayTags.Damage_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage.Fire"),
