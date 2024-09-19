@@ -126,7 +126,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 
 	/**
-	 ** Damage Types
+	 ** Passive Types
 	 */
 	
 	GameplayTags.Passive_Ability1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -228,6 +228,46 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Grants Ability to Summon Minions who do your bidding")
 		);
 
+	GameplayTags.Abilities_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.HitReact"),
+		FString("Grants Ability to feel pain when one is injured in battle")
+		);
+
+	GameplayTags.Abilities_Status_Locked = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Locked"),
+		FString("Grants Ability to perceive potential future Abilities yet to be learned.")
+		);
+
+	GameplayTags.Abilities_Status_Eligible = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Eligible"),
+		FString("Grants Ability to learn a new or upgraded Ability")
+		);
+
+	GameplayTags.Abilities_Status_Unlocked = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Unlocked"),
+		FString("Grants the knowledge necessary to perform a new or upgraded Ability")
+		);
+
+	GameplayTags.Abilities_Status_Equipped = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Equipped"),
+		FString("Grants the User the Ability to perform a new or upgraded Ability in combat")
+		);
+
+	GameplayTags.Abilities_Type_Offensive = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Type_Offensive"),
+		FString("Grants Ability to categorize any Ability as one used on offense in Combat")
+		);
+
+	GameplayTags.Abilities_Type_Passive = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Type_Passive"),
+		FString("Grants Ability to categorize any Ability as one permanently affixed to the User, that doesn't require focus or concentration to be effective")
+		);
+
+	GameplayTags.Abilities_Type_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Type_None"),
+		FString("Grants Ability to categorize any Ability that does not meet the requirements of either Offensive or Passive Abilities")
+		);
+	
 	GameplayTags.Abilities_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Fire..FireBolt"),
 		FString("Grants Ability to Conjure singular FireBolts from Aura's Staff")
