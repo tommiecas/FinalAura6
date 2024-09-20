@@ -214,6 +214,11 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("HitReact")
 		);
 
+	GameplayTags.Abilities_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.None"),
+		FString("The mark designating that its Owner does not have, and may NEVER have, any Abilities")
+		);
+
 	/*
 	** Abilities
 	*/
