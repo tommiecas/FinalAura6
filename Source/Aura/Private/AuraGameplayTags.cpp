@@ -254,23 +254,28 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 
 	GameplayTags.Abilities_Type_Offensive = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Type_Offensive"),
+		FName("Abilities.Type.Offensive"),
 		FString("Grants Ability to categorize any Ability as one used on offense in Combat")
 		);
 
 	GameplayTags.Abilities_Type_Passive = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Type_Passive"),
+		FName("Abilities.Type.Passive"),
 		FString("Grants Ability to categorize any Ability as one permanently affixed to the User, that doesn't require focus or concentration to be effective")
 		);
 
 	GameplayTags.Abilities_Type_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Type_None"),
+		FName("Abilities.Type.None"),
 		FString("Grants Ability to categorize any Ability that does not meet the requirements of either Offensive or Passive Abilities")
 		);
 	
 	GameplayTags.Abilities_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Fire..FireBolt"),
-		FString("Grants Ability to Conjure singular FireBolts from Aura's Staff")
+		FName("Abilities.Fire.FireBolt"),
+		FString("Grants Ability to Conjure singular FireBolts from Aura's Staff to Burn Enemies")
+		);
+
+	GameplayTags.Abilities_Lightning_Electrocute = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Lightning.Electrocute"),
+		FString("Grants Ability to Conjure singular Lightning Bolts from Aura's Staff to Electrocute Enemies")
 		);
 
 	/*

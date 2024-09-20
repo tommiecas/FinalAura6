@@ -39,8 +39,6 @@ void UAuraAbilitySystemComponent::AddCharacterPassiveAbilities(
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
 		GiveAbilityAndActivateOnce(AbilitySpec);	
 	}
-	bStartupAbilitiesGiven = true;
-	AbilitiesGivenDelegate.Broadcast();
 }
 
 void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
