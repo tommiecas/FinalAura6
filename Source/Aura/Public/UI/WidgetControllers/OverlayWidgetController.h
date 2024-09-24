@@ -67,6 +67,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Gameplay Ability System | Level")
 	FOnPlayerStatChangedSignature OnPlayerLevelChangedDelegate;
+
+	UFUNCTION(BlueprintCallable)
+	void PassiveGlobeDeselect();
+
+	UFUNCTION(BlueprintCallable)
+	void PassiveSpellGlobeSelected(const FGameplayTag& AbilityTag);
 	
 protected:
 

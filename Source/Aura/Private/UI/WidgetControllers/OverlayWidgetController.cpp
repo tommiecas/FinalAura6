@@ -5,10 +5,12 @@
 
 #include <ThirdParty/SPIRV-Reflect/SPIRV-Reflect/spirv_reflect.h>
 
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Player/AuraPlayerState.h"
+#include "UI/WidgetControllers/SpellMenuWidgetController.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -88,6 +90,23 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	}
 }
 
+void UOverlayWidgetController::PassiveGlobeDeselect()
+{
+		if (bWaitingForEquipSelection)
+		{
+			const FGameplayTag SelectedAbilityType = AbilityInfo->FindAbilityInfoForTag(SelectedAbility.Ability).AbilityType;
+			StopWaitingForEquipDelegate.Broadcast(SelectedAbilityType);
+			bWaitingForEquipSelection = false;
+		}
+
+		SelectedAbility.Ability = FAuraGameplayTags::Get().Abilities_None;
+		SelectedAbility.Status = FAuraGameplayTags::Get().Abilities_Status_Locked;
+
+		SpellGlobeSelectedDelegate.Broadcast(false, false, FString(), FString());
+}
+
+
+
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
 {
 	OnHealthChanged.Broadcast(Data.NewValue);
@@ -128,4 +147,41 @@ void UOverlayWidgetController::OnXPChanged(const int32 NewXP)
 		const float XPBarPercent = static_cast<float>(XPForThisLevel) / static_cast<float>(DeltaLevelRequirement);
 		OnXPPercentChangedDelegate.Broadcast(XPBarPercent);
 	}
+}
+
+void UOverlayWidgetController::PassiveSpellGlobeSelected(const FGameplayTag& AbilityTag)
+{
+	if (bWaitingForEquipSelection)
+	{
+		const FGameplayTag SelectedAbilityType = AbilityInfo->FindAbilityInfoForTag(AbilityTag).AbilityType;
+		StopWaitingForEquipDelegate.Broadcast(SelectedAbilityType);
+		bWaitingForEquipSelection = false;
+	}
+	
+	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+	const int32 SpellPoints = GetAuraPS()->GetSpellPoints();
+	FGameplayTag AbilityStatus;
+	
+	const bool bTagValid = AbilityTag.IsValid();
+	const bool bTagNone = AbilityTag.MatchesTag(GameplayTags.Abilities_None);
+	const FGameplayAbilitySpec* AbilitySpec = GetAuraASC()->GetSpecFromAbilityTag(AbilityTag);
+	const bool bSpecValid = AbilitySpec != nullptr;
+	if (!bTagValid || bTagNone || !bSpecValid)
+	{
+		AbilityStatus = GameplayTags.Abilities_Status_Locked;
+	}
+	else
+	{
+		AbilityStatus = GetAuraASC()->GetStatusFromSpec(*AbilitySpec);
+	}
+
+	SelectedAbility.Ability = AbilityTag;
+	SelectedAbility.Status = AbilityStatus;
+	bool bEnableSpendPoints = false;
+	bool bEnableEquip = false;
+	ShouldEnableButtons(AbilityStatus, SpellPoints, bEnableSpendPoints, bEnableEquip);
+	FString Description;
+	FString NextLevelDescription;
+	GetAuraASC()->GetDescriptionsByAbilityTag(AbilityTag, Description, NextLevelDescription);
+	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip, Description, NextLevelDescription);
 }
