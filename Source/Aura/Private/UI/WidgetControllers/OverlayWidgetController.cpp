@@ -61,6 +61,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 
 	if (GetAuraASC())
 	{
+		GetAuraASC()->AbilityEquipped.AddUObject(this, &UOverlayWidgetController::OnAbilityEquipped);
 		if (GetAuraASC()->bStartupAbilitiesGiven)
 		{
 			BroadcastAbilityInfo();
@@ -184,4 +185,22 @@ void UOverlayWidgetController::PassiveSpellGlobeSelected(const FGameplayTag& Abi
 	FString NextLevelDescription;
 	GetAuraASC()->GetDescriptionsByAbilityTag(AbilityTag, Description, NextLevelDescription);
 	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip, Description, NextLevelDescription);
+}
+
+void UOverlayWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status,
+	const FGameplayTag& Slot, const FGameplayTag& PreviousSlot) const
+{
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+	
+	FAuraAbilityInfo LastSlotInfo;
+	LastSlotInfo.StatusTag = GameplayTags.Abilities_Status_Unlocked;
+	LastSlotInfo.InputTag = PreviousSlot;
+	LastSlotInfo.AbilityTag = GameplayTags.Abilities_None;
+	// Broadcast empty info if PrevSlot is a valid slot. Only if equipping an already equipped spell
+	AbilityInfoDelegate.Broadcast(LastSlotInfo);
+
+	FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+	Info.StatusTag = Status;
+	Info.InputTag = Slot;
+	AbilityInfoDelegate.Broadcast(Info);
 }

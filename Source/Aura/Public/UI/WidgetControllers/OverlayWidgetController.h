@@ -75,7 +75,7 @@ public:
 	void PassiveSpellGlobeSelected(const FGameplayTag& AbilityTag);
 	
 protected:
-
+	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot) const;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 
