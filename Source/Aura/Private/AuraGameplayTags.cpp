@@ -211,6 +211,26 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Debuff for Lightning Damage, ass the Target receives a paralyzing shock to their nervous system")
 		);
 
+	GameplayTags.Debuff_Chance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Chance"),
+		FString("Grants the chance a Debuff will accompany Damage during an attack in battle")
+		);
+
+	GameplayTags.Debuff_Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Damage"),
+		FString("Grants the amount of Damage that accumulates over a period of time if a Debuff occurs during an attack in battle")
+		);
+
+	GameplayTags.Debuff_Frequency = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Frequency"),
+		FString("Grants how often a Debuff will inflict Damage on its Target during an attack in battle")
+		);
+
+	GameplayTags.Debuff_Duration = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Duration"),
+		FString("Grants the length of time a Debuff will continue to inflict Damage on  its Target after an attack in battle")
+		);
+
 	/**
 	 ** Meta Attributes
 	 **/
