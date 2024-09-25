@@ -11,7 +11,6 @@
 #include "UI/WidgetControllers/AuraWidgetController.h"
 #include "Player/AuraPlayerState.h"
 #include "UI/HUD/AuraHUD.h"
-#include "UI/WidgetControllers/AuraWidgetController.h"
 
 bool  UAuraAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams,  AAuraHUD*& OutAuraHUD)
 {
