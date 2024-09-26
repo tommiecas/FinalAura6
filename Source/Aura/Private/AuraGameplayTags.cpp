@@ -188,6 +188,50 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 
 	/**
+	 ** Debuffs
+	 **/
+
+	GameplayTags.Debuff_Damned = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Debuff.Damned"),
+	FString("Debuff for Arcane Damage, as the Target loses their soul to the depths of Hell")
+	);
+
+	GameplayTags.Debuff_Burn = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Burn"),
+		FString("Debuff for Fire Damage, as the flames continue to incinerate the Target")
+		);
+
+	GameplayTags.Debuff_Wounded = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Wounded"),
+		FString("Debuff for Physical Damage, as the Target sustains brutal injuries in battle")
+		);
+
+	GameplayTags.Debuff_Stun = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Stun"),
+		FString("Debuff for Lightning Damage, ass the Target receives a paralyzing shock to their nervous system")
+		);
+
+	GameplayTags.Debuff_Chance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Chance"),
+		FString("Grants the chance a Debuff will accompany Damage during an attack in battle")
+		);
+
+	GameplayTags.Debuff_Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Damage"),
+		FString("Grants the amount of Damage that accumulates over a period of time if a Debuff occurs during an attack in battle")
+		);
+
+	GameplayTags.Debuff_Frequency = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Frequency"),
+		FString("Grants how often a Debuff will inflict Damage on its Target during an attack in battle")
+		);
+
+	GameplayTags.Debuff_Duration = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Duration"),
+		FString("Grants the length of time a Debuff will continue to inflict Damage on  its Target after an attack in battle")
+		);
+
+	/**
 	 ** Meta Attributes
 	 **/
 
@@ -204,7 +248,16 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Lightning, GameplayTags.Attributes_Resistances_Lightning);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Arcane, GameplayTags.Attributes_Resistances_Arcane);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistances_Physical);
-	
+
+	/*
+	** Map of Damage Types to Debuffs
+	*/
+
+	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Fire, GameplayTags.Debuff_Burn);
+	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Lightning, GameplayTags.Debuff_Stun);
+	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Arcane, GameplayTags.Debuff_Damned);
+	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Physical, GameplayTags.Debuff_Wounded);
+
 	 /*
 	 ** Effects
 	 */
