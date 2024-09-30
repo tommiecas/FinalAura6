@@ -18,7 +18,11 @@ class UAuraAbilitySystemComponent;
 class USplineComponent;
 
 /**
- * 
+ * AAuraPlayerController class
+ *
+ * This class is responsible for handling the player's interaction within the game.
+ * It extends the basic player controller functionality specifically for the Aura game.
+ * This includes managing player's inputs, controlling the character, and handling UI interactions.
  */
 UCLASS()
 class AURA_API AAuraPlayerController : public APlayerController

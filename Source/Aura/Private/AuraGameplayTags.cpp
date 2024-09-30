@@ -380,16 +380,40 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Montage_Attack_2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Montage.Attack.2"),
-		FString("Because even in Combat... you want to look good.")
+		FString("Because even in Combat... you want to look good when you know two different attack moves.")
 		);
 
 	GameplayTags.Montage_Attack_3 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Montage.Attack.3"),
-		FString("Because even in Combat... you want to look good.")
+		FString("Because even in Combat... you want to look good with all three of the attack moves at your disposal.")
 		);
 
 	GameplayTags.Montage_Attack_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Montage.Attack.4"),
-		FString("Because even in Combat... you want to look good.")
+		FString("Because even in Combat... you want to look good when you blow enemies away with the four unique attack moves you've mastered in such a short amount of time.")
+		);
+
+	/*
+	** Player Tags
+	*/
+	
+	GameplayTags.Player_Block_InputPressed = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Player.Block.InputPressed"),
+		FString("Stops the Player from pressing one ability key while another one is already in use." )
+		);
+
+	GameplayTags.Player_Block_InputHeld = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("PLayer.Block.InputHeld"),
+		FString("Stops the Player from holding one ability key while another one is already in use.")
+		);
+
+	GameplayTags.Player_Block_InputReleased = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Player.Block.InputReleased"),
+		FString("Stops the Player from releasing one ability key while another one is already in use.")
+		);
+
+	GameplayTags.Player_Block_CursorTrace = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Player.Block.CursorTrace"),
+		FString("Stops the Player from tracing under the cursor to highlight enemies targeted.")
 		);
 }
