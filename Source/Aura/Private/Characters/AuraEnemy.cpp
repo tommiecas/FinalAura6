@@ -17,7 +17,9 @@
 
 AAuraEnemy::AAuraEnemy()
 {
+	GetMesh()->SetCollisionObjectType(ECC_Enemy);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Ignore);
 
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
