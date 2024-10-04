@@ -346,7 +346,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 
 	GameplayTags.Abilities_Passive_ManaSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Passive.LifeSiphon"),
+		FName("Abilities.Passive.ManaSiphon"),
 		FString("Grants the User the Ability to Siphon Mana... you're a little slow, aren't you?")
 		);
 
