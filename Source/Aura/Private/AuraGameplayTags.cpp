@@ -332,6 +332,25 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 
 	/*
+	** Passive Spells
+	*/
+	
+	GameplayTags.Abilities_Passive_HaloOfProtection = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Passive.HaloOfProtection"),
+		FString("Grants the User a Halo of Protection... duh!")
+		);
+
+	GameplayTags.Abilities_Passive_LifeSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Passive.LifeSiphon"),
+		FString("Grants the User the Ability to Siphon Life... duh!")
+		);
+
+	GameplayTags.Abilities_Passive_ManaSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Passive.LifeSiphon"),
+		FString("Grants the User the Ability to Siphon Mana... you're a little slow, aren't you?")
+		);
+
+	/*
 	** Cooldowns
 	*/
 	
