@@ -41,14 +41,12 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void SetMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
-	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
-	virtual FOnDeath GetOnDeathDelegate() override;
+	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() override;
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() override; 
 	/** End Combat Interface */
 
 	FOnASCRegistered OnASCRegistered;
 	FOnDeathSignature OnDeathSignatureDelegate;
-	FOnDeath OnDeathDelegate;
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath(const FVector& DeathImpulse);
@@ -59,8 +57,15 @@ public:
 	UPROPERTY(ReplicatedUsing=OnRep_Stunned, BlueprintReadOnly)
 	bool bIsStunned = false;
 
+	UPROPERTY(ReplicatedUsing=OnRep_Burned, BlueprintReadOnly)
+	bool bIsBurned = false;
+
 	UFUNCTION()
 	virtual void OnRep_Stunned();
+
+	UFUNCTION()
+	virtual void OnRep_Burned();
+	
 
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
@@ -107,7 +112,7 @@ protected:
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
 	virtual void InitializeDefaultAttributes() const;
 
-	void AddCharacterAbilities();
+	void AddCharacterAbilities() const;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
@@ -139,6 +144,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
 	
 private:
 	UPROPERTY(EditAnywhere, Category = "Abilities")
