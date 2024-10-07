@@ -120,24 +120,21 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Input Tag for the '4' Key (when using a mouse and keyboard), or the 'Right' button on the left-hand-side D-Pad (when using a gamepad controller)")
 		);
 
+	GameplayTags.InputTag_Passive1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("InputTag.Passive1"),
+	FString("Grants the User the Ability to learn their first Passive Ability")
+	);
+
+	GameplayTags.InputTag_Passive2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag_Passive2"),
+		FString("Grants the User the Ability to learn their second Passive Ability")
+		);
+
 	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage"),
 		FString("Damage")
 		);
 
-	/**
-	 ** Passive Types
-	 */
-	
-	GameplayTags.Passive_Ability1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Passive.Ability1"),
-		FString("Grants the User the Ability to learn their first Passive Ability")
-		);
-
-	GameplayTags.Passive_Ability2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Passive.Ability2"),
-		FString("Grants the User the Ability to learn their second Passive Ability")
-		);
 
 	/**
 	 ** Damage Types
