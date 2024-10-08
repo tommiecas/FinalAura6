@@ -319,6 +319,11 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Grants Ability to Conjure singular Lightning Bolts from Aura's Staff to Electrocute Enemies")
 		);
 
+	GameplayTags.Abilities_Arcane_ArcaneShards = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Arcane.ArcaneShards"),
+		FString("Grants Ability to Conjure Shards of Damnation from the Depths of Hell itself to condemn the souls of your Enemies to eternal damnation")
+		);
+
 	/*
 	** Passive Spells
 	*/
