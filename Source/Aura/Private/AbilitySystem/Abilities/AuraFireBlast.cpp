@@ -24,7 +24,8 @@ FString UAuraFireBlast::GetDescription(int32 Level)
 	// Description
 	"Launches <NumProjectiles>%d</> Fireballs \n"
 	"outward in all directions, \n"
-	"then double back, and explode upon their return. \n\n"
+	"which then double back, \n"
+	"and explode upon their return. \n\n"
 
 	// Damage
 	"Deals <Damage>%d</> Radial Fire Damage with "
@@ -60,7 +61,8 @@ FString UAuraFireBlast::GetNextLevelDescription(int32 Level)
 	// Description
 	"Launches <NumProjectiles>%d</> Fireballs \n"
 	"outward in all directions, \n"
-	"then double back, and explode upon their return. \n\n"
+	"which then double back, \n"
+	"and explode upon their return. \n\n"
 
 	// Damage
 	"Deals <Damage>%d</> Radial Fire Damage with "
@@ -72,4 +74,9 @@ FString UAuraFireBlast::GetNextLevelDescription(int32 Level)
 	Cooldown,
 	NumFireBalls,
 	ScaledDamage);
+}
+
+TArray<AAuraFireBall*> UAuraFireBlast::SpawnFireBalls()
+{
+	return TArray<AAuraFireBall*>();
 }
