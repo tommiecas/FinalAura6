@@ -314,6 +314,11 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Grants Ability to Conjure singular FireBolts from Aura's Staff to Burn Enemies")
 		);
 
+	GameplayTags.Abilities_Fire_FireBlast = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Fire.FireBlast"),
+		FString("Grants Ability to Conjure multiple FireBalls that launch outward, then double back and explode upon their return.")
+		);
+
 	GameplayTags.Abilities_Lightning_Electrocute = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Lightning.Electrocute"),
 		FString("Grants Ability to Conjure singular Lightning Bolts from Aura's Staff to Electrocute Enemies")
