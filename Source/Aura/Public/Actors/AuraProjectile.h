@@ -43,8 +43,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USphereComponent> Sphere;
-	
+
+	bool IsValidOverlap(AActor* OtherActor);
 	bool bHit = false;
+	
 private:
 
 
