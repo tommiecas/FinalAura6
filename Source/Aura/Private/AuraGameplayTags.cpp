@@ -428,4 +428,13 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Player.Block.CursorTrace"),
 		FString("Stops the Player from tracing under the cursor to highlight enemies targeted.")
 		);
+
+	/*
+	 * Gameplay Cues
+	 */
+
+	GameplayTags.GameplayCue_FireBlast = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("GameplayCue.FireBlast"),
+		FString("Controls the visual and aural after-effects that naturally occur in the more explosive aspects of the FireBlast spell.")
+		);
 }
