@@ -47,6 +47,8 @@ public:
 	
 	void SetXP(const int32 InXP);
 	void SetLevel(const int32 InLevel);
+	void SetAttributePoints(int32 InPoints);
+	void SetSpellPoints(int32 InPoints);
 	
 protected:
 	UPROPERTY(VisibleAnywhere)
