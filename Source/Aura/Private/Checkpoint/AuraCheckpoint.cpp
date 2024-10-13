@@ -3,6 +3,7 @@
 
 #include "Checkpoint/AuraCheckpoint.h"
 #include "Components/SphereComponent.h"
+#include "Interactions/PlayerInterface.h"
 #include "Preferences/PersonaOptions.h"
 
 AAuraCheckpoint::AAuraCheckpoint(const FObjectInitializer& ObjectInitializer)
@@ -33,8 +34,9 @@ void AAuraCheckpoint::BeginPlay()
 void AAuraCheckpoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->ActorHasTag(FName("Player")))
+	if (OtherActor->Implements<UPlayerInterface>())
 	{
+		IPlayerInterface::Execute_SaveProgress(OtherActor, PlayerStartTag);
 		HandleGlowEffects();
 	}
 }
