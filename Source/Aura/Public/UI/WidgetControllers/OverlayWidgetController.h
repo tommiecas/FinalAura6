@@ -30,6 +30,7 @@ class UAbilityInfo;
 class UAuraUserWidget;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLevelChangedSignature, float, NewLevel, bool, bLevelUp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
 
 
@@ -66,7 +67,7 @@ public:
 	FOnAttributeChangedSignature OnXPPercentChangedDelegate;
 
 	UPROPERTY(BlueprintAssignable, Category = "Gameplay Ability System | Level")
-	FOnPlayerStatChangedSignature OnPlayerLevelChangedDelegate;
+	FOnLevelChangedSignature OnPlayerLevelChangedDelegate;
 
 	UFUNCTION(BlueprintCallable)
 	void PassiveGlobeDeselect();

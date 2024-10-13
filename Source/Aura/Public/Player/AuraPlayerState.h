@@ -12,7 +12,7 @@ class UAbilitySystemComponent;
 class ULevelUpInfo;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPLayerStatChanged, int32 /*StatValue*/);
-
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChanged, int32 /* STat Value */, bool /* bLevelUp */);
 /**
  * 
  */
@@ -31,7 +31,7 @@ public:
 	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 
 	FOnPLayerStatChanged OnXPChangedDelegate;
-	FOnPLayerStatChanged OnLevelChangedDelegate;
+	FOnLevelChanged OnLevelChangedDelegate;
 	FOnPLayerStatChanged OnAttributePointsChangedDelegate;
 	FOnPLayerStatChanged OnSpellPointsChangedDelegate;
 		
@@ -62,7 +62,7 @@ private:
 	int32 Level = 1;
 
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing=OnRep_XP)
-	int32 XP = 1;
+	int32 XP = 0;
 	
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing=OnRep_AttributePoints)
     int32 AttributePoints = 0;
