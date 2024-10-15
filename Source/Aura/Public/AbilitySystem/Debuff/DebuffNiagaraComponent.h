@@ -14,19 +14,13 @@ UCLASS()
 class AURA_API UDebuffNiagaraComponent : public UNiagaraComponent
 {
 	GENERATED_BODY()
-
 public:
 	UDebuffNiagaraComponent();
-	
-	UPROPERTY(EditDefaultsOnly)
+
+	UPROPERTY(VisibleAnywhere)
 	FGameplayTag DebuffTag;
 
 protected:
 	virtual void BeginPlay() override;
-
 	void DebuffTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
-
-	UFUNCTION()
-	void OnOwnerDeath(AActor* DeadActor);
-	
 };

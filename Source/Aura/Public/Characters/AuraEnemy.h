@@ -42,7 +42,6 @@ public:
 	FOnAttributeChangedSignature OnMaxHealthChanged;
 
 	void HitReactTagChanged(const FGameplayTag CallbackTag, const int32 NewCount);
-	virtual void StunTagChanged(const FGameplayTag CallbackTag, const int32 NewCount) override;
 	UPROPERTY(BlueprintReadOnly, Category = "Combat")
 	bool bHitReacting = false;
 
@@ -56,6 +55,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, const int32 NewCount) override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
 	

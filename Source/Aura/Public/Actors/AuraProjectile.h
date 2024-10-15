@@ -7,10 +7,8 @@
 #include "GameFramework/Actor.h"
 #include "AuraProjectile.generated.h"
 
-struct FGameplayEffectSpecHandle;
-class USphereComponent;
 class UNiagaraSystem;
-class UAudioComponent;
+class USphereComponent;
 class UProjectileMovementComponent;
 
 UCLASS()
@@ -32,10 +30,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	
+
 	UFUNCTION(BlueprintCallable)
 	virtual void OnHit();
-
 	virtual void Destroyed() override;
 
 	UFUNCTION()
@@ -47,21 +44,21 @@ protected:
 	bool IsValidOverlap(AActor* OtherActor);
 	bool bHit = false;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<USoundBase> LoopingSound;
-
 	UPROPERTY()
 	TObjectPtr<UAudioComponent> LoopingSoundComponent;
-	
 private:
 
+	UPROPERTY(EditDefaultsOnly)
+	float LifeSpan = 15.f;
 
+
+	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraSystem> ImpactEffect;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundBase> ImpactSound;
-	
-	UPROPERTY(EditDefaultsOnly)
-	float LifeSpan = 15.f;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USoundBase> LoopingSound;
 };

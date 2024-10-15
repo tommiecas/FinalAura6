@@ -8,12 +8,13 @@
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "CombatInterface.generated.h"
 
-class UNiagaraSystem;
 class UAbilitySystemComponent;
+class UNiagaraSystem;
+class UAnimMontage;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnASCRegistered, UAbilitySystemComponent*)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathSignature, AActor*, DeadActor);
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnDamageSignature, float /* DamageAmount */)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnDamageSignature, float /*DamageAmount*/);
 
 USTRUCT(BlueprintType)
 struct FTaggedMontage
@@ -32,7 +33,6 @@ struct FTaggedMontage
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	USoundBase* ImpactSound = nullptr;
 };
-class UAnimMontage;
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI, BlueprintType)
@@ -40,6 +40,7 @@ class UCombatInterface : public UInterface
 {
 	GENERATED_BODY()
 };
+
 
 /**
  * 
@@ -49,23 +50,24 @@ class AURA_API ICombatInterface
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
+
 public:
 	UFUNCTION(BlueprintNativeEvent)
 	int32 GetPlayerLevel();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FVector GetCombatSocketLocation(const FGameplayTag& MontageTag);
-	
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void UpdateFacingTarget(const FVector& Target);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UAnimMontage* GetHitReactMontage();
 
 	virtual void Die(const FVector& DeathImpulse) = 0;
-	virtual FOnDeathSignature& GetOnDeathSignatureDelegate() = 0;
-	virtual FOnDamageSignature& GetOnDamageSignature() = 0;
-	
+	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
+	virtual FOnDamageSignature& GetOnDamageSignature() = 0; 
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool IsDead() const;
 
@@ -79,7 +81,7 @@ public:
 	UNiagaraSystem* GetBloodEffect();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	FTaggedMontage GetTaggedMontageByTag(const FGameplayTag MontageTag);
+	FTaggedMontage GetTaggedMontageByTag(const FGameplayTag& MontageTag);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	int32 GetMinionCount();
@@ -91,7 +93,7 @@ public:
 	ECharacterClass GetCharacterClass();
 
 	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() = 0;
-	
+
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void SetInShockLoop(bool bInLoop);
 

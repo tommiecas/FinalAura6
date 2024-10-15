@@ -3,13 +3,11 @@
 
 #include "UI/WidgetControllers/AuraWidgetController.h"
 
-#include "AuraGameplayTags.h"
-#include "AbilitySystem/AuraAbilitySystemComponent.h"
-#include "AbilitySystem/AuraAttributeSet.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
-
 
 void UAuraWidgetController::SetWidgetControllerParams(const FWidgetControllerParams& WCParams)
 {
@@ -78,36 +76,4 @@ UAuraAttributeSet* UAuraWidgetController::GetAuraAS()
 		AuraAttributeSet = Cast<UAuraAttributeSet>(AttributeSet);
 	}
 	return AuraAttributeSet;
-}
-
-void UAuraWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 SpellPoints,
-													 bool& bShouldEnableSpellPointsButton, bool& bShouldEnableEquipButton)
-{
-	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
-	bShouldEnableEquipButton = false;
-	bShouldEnableSpellPointsButton = false;
-	if (AbilityStatus.MatchesTagExact(GameplayTags.Abilities_Status_Equipped))
-	{
-		bShouldEnableEquipButton = true;
-		if (SpellPoints > 0)
-		{
-			bShouldEnableSpellPointsButton = true;
-		}
-		
-	}
-	else if (AbilityStatus.MatchesTagExact(GameplayTags.Abilities_Status_Eligible))
-	{
-		if (SpellPoints > 0)
-		{
-			bShouldEnableSpellPointsButton = true;
-		}
-	}
-	else if (AbilityStatus.MatchesTagExact(GameplayTags.Abilities_Status_Unlocked))
-	{
-		bShouldEnableEquipButton = true;
-		if (SpellPoints > 0)
-		{
-			bShouldEnableSpellPointsButton = true;
-		}
-	}
 }

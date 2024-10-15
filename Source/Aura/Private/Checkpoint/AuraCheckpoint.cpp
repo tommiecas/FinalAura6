@@ -2,16 +2,15 @@
 
 
 #include "Checkpoint/AuraCheckpoint.h"
+
 #include "Components/SphereComponent.h"
 #include "Interactions/PlayerInterface.h"
-#include "Preferences/PersonaOptions.h"
 
 AAuraCheckpoint::AAuraCheckpoint(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	
 	PrimaryActorTick.bCanEverTick = false;
-
+	
 	CheckpointMesh = CreateDefaultSubobject<UStaticMeshComponent>("CheckpointMesh");
 	CheckpointMesh->SetupAttachment(GetRootComponent());
 	CheckpointMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -24,15 +23,7 @@ AAuraCheckpoint::AAuraCheckpoint(const FObjectInitializer& ObjectInitializer)
 	Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 }
 
-void AAuraCheckpoint::BeginPlay()
-{
-	Super::BeginPlay();
-
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraCheckpoint::OnSphereOverlap);
-}
-
-void AAuraCheckpoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AAuraCheckpoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor->Implements<UPlayerInterface>())
 	{
@@ -41,10 +32,17 @@ void AAuraCheckpoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 	}
 }
 
+void AAuraCheckpoint::BeginPlay()
+{
+	Super::BeginPlay();
+
+	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraCheckpoint::OnSphereOverlap);
+}
+
 void AAuraCheckpoint::HandleGlowEffects()
 {
 	Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	UMaterialInstanceDynamic* DynamicMaterialInstance =  UMaterialInstanceDynamic::Create(CheckpointMesh->GetMaterial(0), this);
-	CheckpointMesh->SetMaterial(0, DynamicMaterialInstance);
-	CheckpointReached(DynamicMaterialInstance);
+	UMaterialInstanceDynamic* DynamicMaterialInstace = UMaterialInstanceDynamic::Create(CheckpointMesh->GetMaterial(0), this);
+	CheckpointMesh->SetMaterial(0, DynamicMaterialInstace);
+	CheckpointReached(DynamicMaterialInstace);
 }

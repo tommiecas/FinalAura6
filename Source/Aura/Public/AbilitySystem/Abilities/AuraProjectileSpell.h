@@ -3,14 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AuraDamageGameplayAbility.h"
-#include "AbilitySystem/Abilities/AuraGameplayAbility.h"
+#include "AbilitySystem/Abilities/AuraDamageGameplayAbility.h"
 #include "AuraProjectileSpell.generated.h"
 
 class AAuraProjectile;
 class UGameplayEffect;
 struct FGameplayTag;
-
 /**
  * 
  */
@@ -19,7 +17,6 @@ class AURA_API UAuraProjectileSpell : public UAuraDamageGameplayAbility
 {
 	GENERATED_BODY()
 
-public:
 
 protected:
 
@@ -33,6 +30,4 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	int32 NumProjectiles = 5;
-
-	
 };

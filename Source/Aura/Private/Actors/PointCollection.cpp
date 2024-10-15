@@ -6,6 +6,7 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 
+// Sets default values
 APointCollection::APointCollection()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -13,7 +14,7 @@ APointCollection::APointCollection()
 	Pt_0 = CreateDefaultSubobject<USceneComponent>("Pt_0");
 	ImmutablePts.Add(Pt_0);
 	SetRootComponent(Pt_0);
-	
+
 	Pt_1 = CreateDefaultSubobject<USceneComponent>("Pt_1");
 	ImmutablePts.Add(Pt_1);
 	Pt_1->SetupAttachment(GetRootComponent());
@@ -25,7 +26,7 @@ APointCollection::APointCollection()
 	Pt_3 = CreateDefaultSubobject<USceneComponent>("Pt_3");
 	ImmutablePts.Add(Pt_3);
 	Pt_3->SetupAttachment(GetRootComponent());
-
+	
 	Pt_4 = CreateDefaultSubobject<USceneComponent>("Pt_4");
 	ImmutablePts.Add(Pt_4);
 	Pt_4->SetupAttachment(GetRootComponent());
@@ -33,7 +34,7 @@ APointCollection::APointCollection()
 	Pt_5 = CreateDefaultSubobject<USceneComponent>("Pt_5");
 	ImmutablePts.Add(Pt_5);
 	Pt_5->SetupAttachment(GetRootComponent());
-
+	
 	Pt_6 = CreateDefaultSubobject<USceneComponent>("Pt_6");
 	ImmutablePts.Add(Pt_6);
 	Pt_6->SetupAttachment(GetRootComponent());
@@ -53,10 +54,11 @@ APointCollection::APointCollection()
 	Pt_10 = CreateDefaultSubobject<USceneComponent>("Pt_10");
 	ImmutablePts.Add(Pt_10);
 	Pt_10->SetupAttachment(GetRootComponent());
+
+	
 }
 
-TArray<USceneComponent*> APointCollection::GetGroundPoints(const FVector& GroundLocation, int32 NumPoints,
-	float YawOverride)
+TArray<USceneComponent*> APointCollection::GetGroundPoints(const FVector& GroundLocation, int32 NumPoints, float YawOverride)
 {
 	checkf(ImmutablePts.Num() >= NumPoints, TEXT("Attempted to access ImmutablePts out of bounds."));
 
@@ -78,8 +80,7 @@ TArray<USceneComponent*> APointCollection::GetGroundPoints(const FVector& Ground
 
 		FHitResult HitResult;
 		TArray<AActor*> IgnoreActors;
-		UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(this, IgnoreActors,
-			TArray<AActor*>(), 1500.f, GetActorLocation());
+		UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(this, IgnoreActors, TArray<AActor*>(), 1500.f, GetActorLocation());
 
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActors(IgnoreActors);
@@ -94,12 +95,8 @@ TArray<USceneComponent*> APointCollection::GetGroundPoints(const FVector& Ground
 	return ArrayCopy;
 }
 
-
 void APointCollection::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
-
-
-

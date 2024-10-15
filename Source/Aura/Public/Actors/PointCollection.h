@@ -16,7 +16,7 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	TArray<USceneComponent*> GetGroundPoints(const FVector& GroundLocation, int32 NumPoints, float YawOverride = 0.f);
-
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -55,8 +55,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<USceneComponent> Pt_10;
+
 	
-private:
-
-
 };

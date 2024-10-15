@@ -14,12 +14,12 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	 
 	GameplayTags.Attributes_Primary_Strength = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Primary.Strength"),
-		FString("Increases physical Damage")
+		FString("Increases Physical Damage")
 		);
 
 	GameplayTags.Attributes_Primary_Intelligence = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Attributes.Primary.Intelligence"),
-	FString("Increases magical Damage")
+	FString("Increases Magical Damage")
 	);
 
 	GameplayTags.Attributes_Primary_Resilience = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -143,12 +143,12 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Damage_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage.Arcane"),
-		FString("Damage of a Magical nature")
+		FString("Damage will rip a portion of a Target's Soul, and transport it to Hell itself")
 		);
 
 	GameplayTags.Damage_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage.Physical"),
-		FString("Damage will Injure")
+		FString("Damage will Wound")
 		);
 	
 	/**
@@ -167,7 +167,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Attributes_Resistances_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Resistances.Arcane"),
-		FString("Resistant to Magic")
+		FString("Resistant to Magical Arcane Hellfire Energy")
 		);
 
 	GameplayTags.Attributes_Resistances_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -181,7 +181,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Debuff_Damned = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Debuff.Damned"),
-	FString("Debuff for Arcane Damage, as the Target loses their soul to the depths of Hell")
+	FString("Debuff for Arcane Damage, as the Target loses a portion of their soul to the depths of Hell")
 	);
 
 	GameplayTags.Debuff_Burn = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -191,7 +191,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Debuff_Wounded = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Debuff.Wounded"),
-		FString("Debuff for Physical Damage, as the Target sustains brutal injuries in battle")
+		FString("Debuff for Physical Damage, as the Target sustains brutal injuries in battle that continue to bleed out")
 		);
 
 	GameplayTags.Debuff_Stun = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -255,15 +255,15 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Grants Ability to feel pain when one is injured in battle")
 		);
 
+	/*
+	** Abilities
+	*/
+
 	GameplayTags.Abilities_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.None"),
 		FString("The mark designating that its Owner does not have, and may NEVER have, any Abilities")
 		);
-
-	/*
-	** Abilities
-	*/
-	
+		
 	GameplayTags.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Attack"),
 		FString("Grants Ability to attack your Enemies")
@@ -274,40 +274,9 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Grants Ability to Summon Minions who do your bidding")
 		);
 
-	GameplayTags.Abilities_Status_Locked = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Status.Locked"),
-		FString("Grants Ability to perceive potential future Abilities yet to be learned.")
-		);
-
-	GameplayTags.Abilities_Status_Eligible = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Status.Eligible"),
-		FString("Grants Ability to learn a new or upgraded Ability")
-		);
-
-	GameplayTags.Abilities_Status_Unlocked = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Status.Unlocked"),
-		FString("Grants the knowledge necessary to perform a new or upgraded Ability")
-		);
-
-	GameplayTags.Abilities_Status_Equipped = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Status.Equipped"),
-		FString("Grants the User the Ability to perform a new or upgraded Ability in combat")
-		);
-
-	GameplayTags.Abilities_Type_Offensive = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Type.Offensive"),
-		FString("Grants Ability to categorize any Ability as one used on offense in Combat")
-		);
-
-	GameplayTags.Abilities_Type_Passive = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Type.Passive"),
-		FString("Grants Ability to categorize any Ability as one permanently affixed to the User, that doesn't require focus or concentration to be effective")
-		);
-
-	GameplayTags.Abilities_Type_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Type.None"),
-		FString("Grants Ability to categorize any Ability that does not meet the requirements of either Offensive or Passive Abilities")
-		);
+	/*
+	 * Offensive Spells
+	 */
 	
 	GameplayTags.Abilities_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Fire.FireBolt"),
@@ -329,9 +298,9 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Grants Ability to Conjure Shards of Damnation from the Depths of Hell itself to condemn the souls of your Enemies to eternal damnation")
 		);
 
-	/*
-	** Passive Spells
-	*/
+		/*
+		** Passive Spells
+		*/
 	
 	GameplayTags.Abilities_Passive_HaloOfProtection = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Passive.HaloOfProtection"),
@@ -348,8 +317,52 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Grants the User the Ability to Siphon Mana... you're a little slow, aren't you?")
 		);
 
+
 	/*
-	** Cooldowns
+	** Ability Statuses
+	*/
+
+	GameplayTags.Abilities_Status_Locked = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Locked"),
+		FString("Grants Ability to perceive potential future Abilities yet to be learned.")
+		);
+
+	GameplayTags.Abilities_Status_Eligible = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Eligible"),
+		FString("Grants Ability to learn a new or upgraded Ability")
+		);
+
+	GameplayTags.Abilities_Status_Unlocked = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Unlocked"),
+		FString("Grants the knowledge necessary to perform a new or upgraded Ability")
+		);
+
+	GameplayTags.Abilities_Status_Equipped = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Equipped"),
+		FString("Grants the User the Ability to perform a new or upgraded Ability in combat")
+		);
+
+	/*
+	** Ability Types
+	**/
+	
+	GameplayTags.Abilities_Type_Offensive = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Type.Offensive"),
+		FString("Grants Ability to categorize any Ability as one used on offense in Combat")
+		);
+
+	GameplayTags.Abilities_Type_Passive = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Type.Passive"),
+		FString("Grants Ability to categorize any Ability as one permanently affixed to the User, that doesn't require focus or concentration to be effective")
+		);
+
+	GameplayTags.Abilities_Type_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Type.None"),
+		FString("Grants Ability to categorize any Ability that does not meet the requirements of either Offensive or Passive Abilities")
+		);
+	
+	/*
+	** Ability Cooldowns
 	*/
 	
 	GameplayTags.Cooldown_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -382,7 +395,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 
 	/*
-	** Montages
+	** Attack Montages
 	*/
 	
 	GameplayTags.Montage_Attack_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -406,7 +419,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 
 	/*
-	** Player Tags
+	** Player Blocked Tags
 	*/
 	
 	GameplayTags.Player_Block_InputPressed = UGameplayTagsManager::Get().AddNativeGameplayTag(

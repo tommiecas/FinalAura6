@@ -15,12 +15,12 @@ public:
 	AMagicCircle();
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UDecalComponent> MagicCircleDecal;
-
+	
 protected:
 	virtual void BeginPlay() override;
 
-	
+
 	
 };

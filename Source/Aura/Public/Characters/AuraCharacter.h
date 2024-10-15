@@ -17,6 +17,7 @@ UCLASS()
 class AURA_API AAuraCharacter : public AAuraCharacterBase, public IPlayerInterface
 {
 	GENERATED_BODY()
+	
 public:
 	AAuraCharacter();
 	virtual void PossessedBy(AController* NewController) override;
@@ -49,8 +50,9 @@ public:
 	virtual void OnRep_Stunned() override;
 	virtual void OnRep_Burned() override;
 
-protected:
 	void LoadProgress();
+
+protected:
 
 
 private:

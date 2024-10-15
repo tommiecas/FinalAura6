@@ -3,12 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/Data/AbilityInfo.h"
 #include "UI/WidgetControllers/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
-class UAuraAbilitySystemComponent;
-
+struct FAuraAbilityInfo;
 USTRUCT(BlueprintType)
 struct FUIWidgetRow : public FTableRowBase
 {
@@ -26,13 +24,14 @@ struct FUIWidgetRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UTexture2D* Image = nullptr;
 };
-class UAbilityInfo;
+
 class UAuraUserWidget;
+class UAbilityInfo;
+class UAuraAbilitySystemComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLevelChangedSignature, float, NewLevel, bool, bLevelUp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLevelChangedSignature, int32, NewLevel, bool, bLevelUp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
-
 
 /**
  * 
@@ -41,60 +40,46 @@ UCLASS(BlueprintType, Blueprintable)
 class AURA_API UOverlayWidgetController : public UAuraWidgetController
 {
 	GENERATED_BODY()
-
 public:
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "Gameplay Ability System | Attributes")
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnAttributeChangedSignature OnHealthChanged;
 
-	UPROPERTY(BlueprintAssignable, Category = "Gameplay Ability System | Attributes")
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnAttributeChangedSignature OnMaxHealthChanged;
-	
-	UPROPERTY(BlueprintAssignable, Category = "Gameplay Ability System | Attributes")
+
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnAttributeChangedSignature OnManaChanged;
 
-	UPROPERTY(BlueprintAssignable, Category = "Gameplay Ability System | Attributes")
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnAttributeChangedSignature OnMaxManaChanged;
 
-	UPROPERTY(BlueprintAssignable, Category = "Gameplay Ability System | Messages")
+	UPROPERTY(BlueprintAssignable, Category="GAS|Messages")
 	FMessageWidgetRowSignature MessageWidgetRowDelegate;
 
-
-
-	UPROPERTY(BlueprintAssignable, Category = "Gameplay Ability System | XP")
+	UPROPERTY(BlueprintAssignable, Category="GAS|XP")
 	FOnAttributeChangedSignature OnXPPercentChangedDelegate;
 
-	UPROPERTY(BlueprintAssignable, Category = "Gameplay Ability System | Level")
+	UPROPERTY(BlueprintAssignable, Category="GAS|Level")
 	FOnLevelChangedSignature OnPlayerLevelChangedDelegate;
 
-	UFUNCTION(BlueprintCallable)
-	void PassiveGlobeDeselect();
-
-	UFUNCTION(BlueprintCallable)
-	void PassiveSpellGlobeSelected(const FGameplayTag& AbilityTag);
-	
 protected:
-	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot) const;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
-
-	
-	
-	void HealthChanged(const FOnAttributeChangeData& Data) const;
-	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
-	void ManaChanged(const FOnAttributeChangeData& Data) const;
-	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
 
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
 
-	void OnXPChanged(const int32 NewXP);
+	void OnXPChanged(int32 NewXP);
+
+	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot) const;
 };
 
 template <typename T>
 T* UOverlayWidgetController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
 {
-		return DataTable->FindRow<T>(Tag.GetTagName(), TEXT(""));
+	return DataTable->FindRow<T>(Tag.GetTagName(), TEXT(""));
 }

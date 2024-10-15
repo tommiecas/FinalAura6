@@ -2,7 +2,6 @@
 
 
 #include "AbilitySystem/AbilityTasks/TargetDataUnderMouse.h"
-
 #include "AbilitySystemComponent.h"
 #include "Aura/Aura.h"
 
@@ -30,21 +29,21 @@ void UTargetDataUnderMouse::Activate()
 			SetWaitingOnRemotePlayerData();
 		}
 	}
-
 }
 
-void UTargetDataUnderMouse::SendMouseCursorData() const
+void UTargetDataUnderMouse::SendMouseCursorData()
 {
 	FScopedPredictionWindow ScopedPrediction(AbilitySystemComponent.Get());
 	
 	APlayerController* PC = Ability->GetCurrentActorInfo()->PlayerController.Get();
 	FHitResult CursorHit;
 	PC->GetHitResultUnderCursor(ECC_Target, false, CursorHit);
+
 	FGameplayAbilityTargetDataHandle DataHandle;
 	FGameplayAbilityTargetData_SingleTargetHit* Data = new FGameplayAbilityTargetData_SingleTargetHit();
 	Data->HitResult = CursorHit;
 	DataHandle.Add(Data);
-
+	
 	AbilitySystemComponent->ServerSetReplicatedTargetData(
 		GetAbilitySpecHandle(),
 		GetActivationPredictionKey(),

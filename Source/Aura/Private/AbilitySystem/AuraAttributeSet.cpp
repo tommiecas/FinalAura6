@@ -91,11 +91,9 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 	}
 }
 
-
-
 void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
 {
-	// Source = Causer of the Effect, Target = Target of the Effect (Owner of THIS Attribute Set)
+	// Source = causer of the effect, Target = target of the effect (owner of this AS)
 
 	Props.EffectContextHandle = Data.EffectSpec.GetContext();
 	Props.SourceASC = Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
@@ -147,7 +145,6 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		HandleIncomingDamage(Props);
 	}
-	
 	if (Data.EvaluatedData.Attribute == GetIncomingXPAttribute())
 	{
 		HandleIncomingXP(Props);
@@ -169,9 +166,11 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
 			if (CombatInterface)
 			{
+				FVector Impulse = UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle);
 				CombatInterface->Die(UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle));
 			}
 			SendXPEvent(Props);
+			
 		}
 		else
 		{
@@ -199,44 +198,6 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 	}
 }
 
-void UAuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
-{
-		const float LocalIncomingXP = GetIncomingXP();
-		SetIncomingXP(0.f);
-		
-		// Source Character is the owner, since GA_ListenForEvents applies GE_EventBasedEffect, adding to IncomingXP 
-		if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.SourceCharacter->Implements<UCombatInterface>())
-		{
-			const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
-			const int32 CurrentXP = IPlayerInterface::Execute_GetXP(Props.SourceCharacter);
-
-			const int32 NewLevel = IPlayerInterface::Execute_FindLevelForXP(Props.SourceCharacter, CurrentXP + LocalIncomingXP);
-			const int32 NumLevelsUp = NewLevel - CurrentLevel;
-			if (NumLevelsUp > 0)
-			{
-				int32 AttributePointsReward = 0;
-				int32 SpellPointsReward = 0;
-
-				for (int32 i = 0; i < NumLevelsUp; ++i)
-				{
-					SpellPointsReward += IPlayerInterface::Execute_GetSpellPointsReward(Props.SourceCharacter, CurrentLevel + i);
-					AttributePointsReward += IPlayerInterface::Execute_GetAttributePointsReward(Props.SourceCharacter, CurrentLevel + i);
-				}
-				
-				IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NumLevelsUp);
-				IPlayerInterface::Execute_AddToAttributePoints(Props.SourceCharacter, AttributePointsReward);
-				IPlayerInterface::Execute_AddToSpellPoints(Props.SourceCharacter, SpellPointsReward);
-
-				bTopOffHealth = true;
-				bTopOffMana = true;
-
-				IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
-			}
-			
-			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
-		}
-}
-
 void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 {
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
@@ -248,7 +209,7 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	const float DebuffDuration = UAuraAbilitySystemLibrary::GetDebuffDuration(Props.EffectContextHandle);
 	const float DebuffFrequency = UAuraAbilitySystemLibrary::GetDebuffFrequency(Props.EffectContextHandle);
 
-	const FString DebuffName = FString::Printf(TEXT("DynamicDebuff_%s"), *DamageType.ToString());
+	FString DebuffName = FString::Printf(TEXT("DynamicDebuff_%s"), *DamageType.ToString());
 	UGameplayEffect* Effect = NewObject<UGameplayEffect>(GetTransientPackage(), FName(DebuffName));
 
 	Effect->DurationPolicy = EGameplayEffectDurationType::HasDuration;
@@ -280,14 +241,53 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	ModifierInfo.ModifierMagnitude = FScalableFloat(DebuffDamage);
 	ModifierInfo.ModifierOp = EGameplayModOp::Additive;
 	ModifierInfo.Attribute = UAuraAttributeSet::GetIncomingDamageAttribute();
-
-	if (const FGameplayEffectSpec* MutableSpec = new FGameplayEffectSpec(Effect, EffectContext, 1.f))
+	
+	if (FGameplayEffectSpec* MutableSpec = new FGameplayEffectSpec(Effect, EffectContext, 1.f))
 	{
 		FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(MutableSpec->GetContext().Get());
-		const TSharedPtr<FGameplayTag> DebuffDamageType = MakeShareable(new FGameplayTag(DamageType));
+		TSharedPtr<FGameplayTag> DebuffDamageType = MakeShareable(new FGameplayTag(DamageType));
 		AuraContext->SetDamageType(DebuffDamageType);
 
 		Props.TargetASC->ApplyGameplayEffectSpecToSelf(*MutableSpec);
+	}
+}
+
+void UAuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
+{
+	const float LocalIncomingXP = GetIncomingXP();
+	SetIncomingXP(0.f);
+
+	// Source Character is the owner, since GA_ListenForEvents applies GE_EventBasedEffect, adding to IncomingXP
+	if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.SourceCharacter->Implements<UCombatInterface>())
+	{
+		const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
+		const int32 CurrentXP = IPlayerInterface::Execute_GetXP(Props.SourceCharacter);
+
+		const int32 NewLevel = IPlayerInterface::Execute_FindLevelForXP(Props.SourceCharacter, CurrentXP + LocalIncomingXP);
+		const int32 NumLevelUps = NewLevel - CurrentLevel;
+		if (NumLevelUps > 0)
+		{
+			IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NumLevelUps);
+
+			int32 AttributePointsReward = 0;
+			int32 SpellPointsReward = 0;
+
+			for (int32 i = 0; i < NumLevelUps; ++i)
+			{
+				SpellPointsReward += IPlayerInterface::Execute_GetSpellPointsReward(Props.SourceCharacter, CurrentLevel + i);
+				AttributePointsReward += IPlayerInterface::Execute_GetAttributePointsReward(Props.SourceCharacter, CurrentLevel + i);
+			}
+			
+			IPlayerInterface::Execute_AddToAttributePoints(Props.SourceCharacter, AttributePointsReward);
+			IPlayerInterface::Execute_AddToSpellPoints(Props.SourceCharacter, SpellPointsReward);
+	
+			bTopOffHealth = true;
+			bTopOffMana = true;
+				
+			IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
+		}
+			
+		IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
 	}
 }
 
@@ -305,7 +305,6 @@ void UAuraAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute,
 		SetMana(GetMaxMana());
 		bTopOffMana = false;
 	}
-	
 }
 
 void UAuraAttributeSet::SendXPEvent(const FEffectProperties& Props)
@@ -324,28 +323,31 @@ void UAuraAttributeSet::SendXPEvent(const FEffectProperties& Props)
 	}
 }
 
-void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, const float Damage, const bool bBlockedHit, const bool bCriticalHit) const
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage, bool bBlockedHit, bool bCriticalHit) const
 {
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
-		if(AAuraPlayerController* PC = 	Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
+		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
 		{
 			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
 			return;
 		}
-		if(AAuraPlayerController* PC = 	Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
+		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
 		{
 			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
 		}
-		
 	}
 }
 
+void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Health, OldHealth);
+}
 
-
-/*
- ** Primary Attributes (Function Definitions)
- */
+void UAuraAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Mana, OldMana);
+}
 
 void UAuraAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
 {
@@ -366,10 +368,6 @@ void UAuraAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) cons
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Vigor, OldVigor);
 }
-
-/*
- ** Secondary Attributes (Function Definitions)
- */
 
 void UAuraAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
 {
@@ -421,10 +419,6 @@ void UAuraAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) 
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, MaxMana, OldMaxMana);
 }
 
-/*
- ** Resistance Attributes (Function Definitions)
- */
-
 void UAuraAttributeSet::OnRep_FireResistance(const FGameplayAttributeData& OldFireResistance) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, FireResistance, OldFireResistance);
@@ -444,23 +438,3 @@ void UAuraAttributeSet::OnRep_PhysicalResistance(const FGameplayAttributeData& O
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, PhysicalResistance, OldPhysicalResistance);
 }
-
-/*
- ** Vital Attributes (Function Definitions)
- */
-
-void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Health, OldHealth);
-}
-
-void UAuraAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Mana, OldMana);
-}
-
-
-
-
-
-

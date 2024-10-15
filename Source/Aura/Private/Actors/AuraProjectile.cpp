@@ -27,7 +27,7 @@ AAuraProjectile::AAuraProjectile()
 	Sphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
 	Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 
-	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>("Projectile Movement");
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovement");
 	ProjectileMovement->InitialSpeed = 550.f;
 	ProjectileMovement->MaxSpeed = 550.f;
 	ProjectileMovement->ProjectileGravityScale = 0.f;
@@ -39,14 +39,14 @@ void AAuraProjectile::BeginPlay()
 	SetLifeSpan(LifeSpan);
 	SetReplicateMovement(true);
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraProjectile::OnSphereOverlap);
-	
+
 	LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
 }
 
 void AAuraProjectile::OnHit()
 {
 	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());		
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
 	if (LoopingSoundComponent)
 	{
 		LoopingSoundComponent->Stop();
@@ -70,7 +70,6 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (!IsValidOverlap(OtherActor)) return;
-
 	if (!bHit) OnHit();
 	
 	if (HasAuthority())
@@ -89,10 +88,9 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 				const FVector KnockbackForce = KnockbackDirection * DamageEffectParams.KnockbackMagnitude;
 				DamageEffectParams.KnockbackForce = KnockbackForce;
 			}
-
+			
 			DamageEffectParams.TargetAbilitySystemComponent = TargetASC;
 			UAuraAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
-			
 		}
 		
 		Destroy();
@@ -104,10 +102,8 @@ bool AAuraProjectile::IsValidOverlap(AActor* OtherActor)
 {
 	if (DamageEffectParams.SourceAbilitySystemComponent == nullptr) return false;
 	AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
-	if (SourceAvatarActor == OtherActor) return false;; 
+	if (SourceAvatarActor == OtherActor) return false;
 	if (!UAuraAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor)) return false;
 
 	return true;
 }
-
-

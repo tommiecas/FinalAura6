@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayTagContainer.h"
 #include "Kismet/BlueprintAsyncActionBase.h"
+#include "GameplayTagContainer.h"
+#include "ActiveGameplayEffectHandle.h"
 #include "WaitCooldownChange.generated.h"
 
-struct FGameplayEffectSpec;
-struct FActiveGameplayEffectHandle;
 class UAbilitySystemComponent;
+struct FGameplayEffectSpec;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCooldownChangeSignature, float, TimeRemaining);
 
 /**
@@ -19,7 +19,7 @@ UCLASS(BlueprintType, meta = (ExposedAsyncProxy = "AsyncTask"))
 class AURA_API UWaitCooldownChange : public UBlueprintAsyncActionBase
 {
 	GENERATED_BODY()
-
+	
 public:
 	UPROPERTY(BlueprintAssignable)
 	FCooldownChangeSignature CooldownStart;
@@ -39,6 +39,6 @@ protected:
 
 	FGameplayTag CooldownTag;
 
-	void CooldownTagChanged(const FGameplayTag InCooldownTag, int32 NewCount) const;
-	void OnActiveEffectAdded(UAbilitySystemComponent* TargetASC, const FGameplayEffectSpec& SpecApplied, FActiveGameplayEffectHandle ActiveEffectHandle) const;
+	void CooldownTagChanged(const FGameplayTag InCooldownTag, int32 NewCount);
+	void OnActiveEffectAdded(UAbilitySystemComponent* TargetASC, const FGameplayEffectSpec& SpecApplied, FActiveGameplayEffectHandle ActiveEffectHandle);
 };

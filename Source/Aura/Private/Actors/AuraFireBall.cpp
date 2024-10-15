@@ -3,11 +3,11 @@
 
 #include "Actors/AuraFireBall.h"
 
-#include "Components/AudioComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AuraGameplayTags.h"
 #include "GameplayCueManager.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Components/AudioComponent.h"
 
 void AAuraFireBall::BeginPlay()
 {
@@ -15,8 +15,7 @@ void AAuraFireBall::BeginPlay()
 	StartOutgoingTimeline();
 }
 
-void AAuraFireBall::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AAuraFireBall::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (!IsValidOverlap(OtherActor)) return;
 
@@ -26,7 +25,7 @@ void AAuraFireBall::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AA
 		{
 			const FVector DeathImpulse = GetActorForwardVector() * DamageEffectParams.DeathImpulseMagnitude;
 			DamageEffectParams.DeathImpulse = DeathImpulse;
-		
+			
 			DamageEffectParams.TargetAbilitySystemComponent = TargetASC;
 			UAuraAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
 		}
@@ -41,6 +40,7 @@ void AAuraFireBall::OnHit()
 		CueParams.Location = GetActorLocation();
 		UGameplayCueManager::ExecuteGameplayCue_NonReplicated(GetOwner(), FAuraGameplayTags::Get().GameplayCue_FireBlast, CueParams);
 	}
+	
 	if (LoopingSoundComponent)
 	{
 		LoopingSoundComponent->Stop();

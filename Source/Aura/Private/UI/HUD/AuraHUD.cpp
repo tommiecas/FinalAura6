@@ -3,10 +3,10 @@
 
 #include "UI/HUD/AuraHUD.h"
 
+#include "UI/Widgets/AuraUserWidget.h"
 #include "UI/WidgetControllers/AttributeMenuWidgetController.h"
 #include "UI/WidgetControllers/OverlayWidgetController.h"
 #include "UI/WidgetControllers/SpellMenuWidgetController.h"
-#include "UI/Widgets/AuraUserWidget.h"
 
 UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
 {
@@ -48,7 +48,7 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 	
 	UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), OverlayWidgetClass);
 	OverlayWidget = Cast<UAuraUserWidget>(Widget);
-
+	
 	const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
 	UOverlayWidgetController* WidgetController = GetOverlayWidgetController(WidgetControllerParams);
 
@@ -56,5 +56,3 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 	WidgetController->BroadcastInitialValues();
 	Widget->AddToViewport();
 }
-
-

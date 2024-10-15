@@ -1,8 +1,6 @@
 // Copyright Gravity Well Games
 
-
 #include "Characters/AuraCharacterBase.h"
-
 #include "AbilitySystemComponent.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
@@ -14,12 +12,11 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 
-
 AAuraCharacterBase::AAuraCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
-
+	
 	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("BurnDebuffComponent");
 	BurnDebuffComponent->SetupAttachment(GetRootComponent());
 	BurnDebuffComponent->DebuffTag = GameplayTags.Debuff_Burn;
@@ -27,10 +24,9 @@ AAuraCharacterBase::AAuraCharacterBase()
 	StunDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("StunDebuffComponent");
 	StunDebuffComponent->SetupAttachment(GetRootComponent());
 	StunDebuffComponent->DebuffTag = GameplayTags.Debuff_Stun;
-	
+
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
-	
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 	GetMesh()->SetGenerateOverlapEvents(true);
@@ -43,12 +39,12 @@ AAuraCharacterBase::AAuraCharacterBase()
 	EffectAttachComponent->SetupAttachment(GetRootComponent());
 	HaloOfProtectionNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>("HaloOfProtectionComponent");
 	HaloOfProtectionNiagaraComponent->SetupAttachment(EffectAttachComponent);
-	LifeSiphonNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>("LifeSiphonComponent");
+	LifeSiphonNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>("LifeSiphonNiagaraComponent");
 	LifeSiphonNiagaraComponent->SetupAttachment(EffectAttachComponent);
-	ManaSiphonNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>("ManaSiphonComponent");
+	ManaSiphonNiagaraComponent = CreateDefaultSubobject<UPassiveNiagaraComponent>("ManaSiphonNiagaraComponent");
 	ManaSiphonNiagaraComponent->SetupAttachment(EffectAttachComponent);
-	
 
+	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 }
 
 void AAuraCharacterBase::Tick(float DeltaTime)
@@ -66,8 +62,7 @@ void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	DOREPLIFETIME(AAuraCharacterBase, bIsBeingShocked);
 }
 
-float AAuraCharacterBase::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
-	class AController* EventInstigator, AActor* DamageCauser)
+float AAuraCharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	const float DamageTaken = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	OnDamageDelegate.Broadcast(DamageTaken);
@@ -90,9 +85,9 @@ void AAuraCharacterBase::Die(const FVector& DeathImpulse)
 	MulticastHandleDeath(DeathImpulse);
 }
 
-FOnDeathSignature& AAuraCharacterBase::GetOnDeathSignatureDelegate()
+FOnDeathSignature& AAuraCharacterBase::GetOnDeathDelegate()
 {
-	return OnDeathSignatureDelegate;
+	return OnDeathDelegate;
 }
 
 void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector& DeathImpulse)
@@ -103,7 +98,7 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector& Deat
 	Weapon->SetEnableGravity(true);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	Weapon->AddImpulse(DeathImpulse * 0.1f, NAME_None, true);
-
+	
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetEnableGravity(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
@@ -115,21 +110,22 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector& Deat
 	bDead = true;
 	BurnDebuffComponent->Deactivate();
 	StunDebuffComponent->Deactivate();
-	OnDeathSignatureDelegate.Broadcast(this);
-}
-
-void AAuraCharacterBase::OnRep_Stunned()
-{
-}
-
-void AAuraCharacterBase::OnRep_Burned()
-{
+	OnDeathDelegate.Broadcast(this);
 }
 
 void AAuraCharacterBase::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bIsStunned = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bIsStunned ? 0.f : BaseWalkSpeed;
+}
+
+void AAuraCharacterBase::OnRep_Stunned()
+{
+	
+}
+
+void AAuraCharacterBase::OnRep_Burned()
+{
 }
 
 void AAuraCharacterBase::BeginPlay()
@@ -180,7 +176,7 @@ UNiagaraSystem* AAuraCharacterBase::GetBloodEffect_Implementation()
 	return BloodEffect;
 }
 
-FTaggedMontage AAuraCharacterBase::GetTaggedMontageByTag_Implementation(const FGameplayTag MontageTag)
+FTaggedMontage AAuraCharacterBase::GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag)
 {
 	for (FTaggedMontage TaggedMontage : AttackMontages)
 	{
@@ -253,14 +249,13 @@ void AAuraCharacterBase::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
 }
 
-void AAuraCharacterBase::AddCharacterAbilities() const
+void AAuraCharacterBase::AddCharacterAbilities()
 {
 	UAuraAbilitySystemComponent* AuraASC = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
 	if (!HasAuthority()) return;
 
 	AuraASC->AddCharacterAbilities(StartupAbilities);
 	AuraASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
-	
 }
 
 void AAuraCharacterBase::Dissolve()

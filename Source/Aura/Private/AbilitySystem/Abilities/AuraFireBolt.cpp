@@ -112,8 +112,7 @@ FString UAuraFireBolt::GetNextLevelDescription(int32 Level)
 	ScaledDamage);
 }
 
-void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag,
-	bool bOverridePitch, float PitchOverride, AActor* HomingTarget)
+void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch, float PitchOverride, AActor* HomingTarget)
 {
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer) return;
@@ -127,11 +126,13 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 	const FVector Forward = Rotation.Vector();
 	const int32 EffectiveNumProjectiles = FMath::Min(NumProjectiles, GetAbilityLevel());
 	TArray<FRotator> Rotations = UAuraAbilitySystemLibrary::EvenlySpacedRotators(Forward, FVector::UpVector, ProjectileSpread, EffectiveNumProjectiles);
-	for (const FRotator& Rotator : Rotations)
+
+	for (const FRotator& Rot : Rotations)
 	{
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
-		SpawnTransform.SetRotation(Rotator.Quaternion());
+		SpawnTransform.SetRotation(Rot.Quaternion());
+
 		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(
 		ProjectileClass,
 		SpawnTransform,
@@ -140,6 +141,7 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 	
 		Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
+
 		if (HomingTarget && HomingTarget->Implements<UCombatInterface>())
 		{
 			Projectile->ProjectileMovement->HomingTargetComponent = HomingTarget->GetRootComponent();
@@ -155,6 +157,4 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileTargetLocation, co
 		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
-}	
-		;
-
+}

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GameplayEffectTypes.h"
-#include "../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.29.30133/INCLUDE/stdbool.h"
 #include "AuraAbilityTypes.generated.h"
 
 class UGameplayEffect;
@@ -56,10 +55,10 @@ struct FDamageEffectParams
 	float KnockbackMagnitude = 0.f;
 
 	UPROPERTY(BlueprintReadWrite)
-	FVector KnockbackForce = FVector::ZeroVector;
+	float KnockbackChance = 0.f;
 
 	UPROPERTY(BlueprintReadWrite)
-	float KnockbackChance = 0.f;
+	FVector KnockbackForce = FVector::ZeroVector;
 
 	UPROPERTY(BlueprintReadWrite)
 	bool bIsRadialDamage = false;
@@ -72,6 +71,7 @@ struct FDamageEffectParams
 
 	UPROPERTY(BlueprintReadWrite)
 	FVector RadialDamageOrigin = FVector::ZeroVector;
+	
 };
 
 USTRUCT(BlueprintType)
@@ -80,6 +80,7 @@ struct FAuraGameplayEffectContext : public FGameplayEffectContext
 	GENERATED_BODY()
 
 public:
+
 	bool IsCriticalHit() const { return bIsCriticalHit; }
 	bool IsBlockedHit () const { return bIsBlockedHit; }
 	bool IsSuccessfulDebuff() const { return bIsSuccessfulDebuff; }
@@ -93,9 +94,9 @@ public:
 	float GetRadialDamageInnerRadius() const { return RadialDamageInnerRadius; }
 	float GetRadialDamageOuterRadius() const { return RadialDamageOuterRadius; }
 	FVector GetRadialDamageOrigin() const { return RadialDamageOrigin; }
-	
-	void SetIsCriticalHit(const bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
-	void SetIsBlockedHit(const bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; }
+
+	void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
+	void SetIsBlockedHit(bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; }
 	void SetIsSuccessfulDebuff(bool bInIsDebuff) { bIsSuccessfulDebuff = bInIsDebuff; }
 	void SetDebuffDamage(float InDamage) { DebuffDamage = InDamage; }
 	void SetDebuffDuration(float InDuration) { DebuffDuration = InDuration; }
@@ -107,14 +108,15 @@ public:
 	void SetRadialDamageInnerRadius(float InRadialDamageInnerRadius) { RadialDamageInnerRadius = InRadialDamageInnerRadius; }
 	void SetRadialDamageOuterRadius(float InRadialDamageOuterRadius) { RadialDamageOuterRadius = InRadialDamageOuterRadius; }
 	void SetRadialDamageOrigin(const FVector& InRadialDamageOrigin) { RadialDamageOrigin = InRadialDamageOrigin; }
+	
 	/** Returns the actual struct used for serialization, subclasses must override this! */
-	virtual UScriptStruct* GetScriptStruct() const override
+	virtual UScriptStruct* GetScriptStruct() const
 	{
 		return FGameplayEffectContext::StaticStruct();
 	}
 
 	/** Creates a copy of this context, used to duplicate for later modifications */
-	virtual FGameplayEffectContext* Duplicate() const override
+	virtual FGameplayEffectContext* Duplicate() const
 	{
 		FGameplayEffectContext* NewContext = new FGameplayEffectContext();
 		*NewContext = *this;
@@ -127,7 +129,7 @@ public:
 	}
 
 	/** Custom serialization, subclasses must override this */
-	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
+	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess);
 	
 protected:
 
@@ -168,8 +170,6 @@ protected:
 
 	UPROPERTY()
 	FVector RadialDamageOrigin = FVector::ZeroVector;
-	
-	
 };
 
 template<>

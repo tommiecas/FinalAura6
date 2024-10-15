@@ -13,7 +13,6 @@ UCLASS()
 class AURA_API UAuraBeamSpell : public UAuraDamageGameplayAbility
 {
 	GENERATED_BODY()
-
 public:
 	UFUNCTION(BlueprintCallable)
 	void StoreMouseDataInfo(const FHitResult& HitResult);
@@ -32,8 +31,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void AdditionalTargetDied(AActor* DeadActor);
-	
 protected:
+
 	UPROPERTY(BlueprintReadWrite, Category = "Beam")
 	FVector MouseHitLocation;
 
@@ -47,5 +46,5 @@ protected:
 	TObjectPtr<ACharacter> OwnerCharacter;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Beam")
-	int32 MaxNumShockTargets =5;
+	int32 MaxNumShockTargets = 5;
 };

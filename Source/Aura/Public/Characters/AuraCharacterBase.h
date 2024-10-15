@@ -28,19 +28,20 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	/** Combat Interface */
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die(const FVector& DeathImpulse) override;
-	virtual FOnDeathSignature& GetOnDeathSignatureDelegate() override;
+	virtual FOnDeathSignature& GetOnDeathDelegate() override;
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
 	virtual UNiagaraSystem* GetBloodEffect_Implementation() override;
-	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag MontageTag) override;
+	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void SetMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
@@ -52,7 +53,7 @@ public:
 	/** End Combat Interface */
 
 	FOnASCRegistered OnASCRegistered;
-	FOnDeathSignature OnDeathSignatureDelegate;
+	FOnDeathSignature OnDeathDelegate;
 	FOnDamageSignature OnDamageDelegate;
 
 	UFUNCTION(NetMulticast, Reliable)
@@ -122,7 +123,7 @@ protected:
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
 	virtual void InitializeDefaultAttributes() const;
 
-	void AddCharacterAbilities() const;
+	void AddCharacterAbilities();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;

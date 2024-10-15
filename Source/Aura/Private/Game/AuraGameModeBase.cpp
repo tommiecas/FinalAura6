@@ -3,11 +3,11 @@
 
 #include "Game/AuraGameModeBase.h"
 
-#include "Game/LoadScreenSaveGame.h"
-#include "Kismet/GameplayStatics.h"
-#include "GameFramework/PlayerStart.h"
-#include "UI/ViewModels/MVVM_LoadSlot.h"
 #include "Game/AuraGameInstance.h"
+#include "Game/LoadScreenSaveGame.h"
+#include "GameFramework/PlayerStart.h"
+#include "Kismet/GameplayStatics.h"
+#include "UI/ViewModels/MVVM_LoadSlot.h"
 
 void AAuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 {
@@ -21,7 +21,7 @@ void AAuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 	LoadScreenSaveGame->SaveSlotStatus = Taken;
 	LoadScreenSaveGame->MapName = LoadSlot->GetMapName();
 	LoadScreenSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
-	
+
 	UGameplayStatics::SaveGameToSlot(LoadScreenSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
 }
 
@@ -61,6 +61,7 @@ ULoadScreenSaveGame* AAuraGameModeBase::RetrieveInGameSaveData()
 void AAuraGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
 {
 	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>(GetGameInstance());
+
 	const FString InGameLoadSlotName = AuraGameInstance->LoadSlotName;
 	const int32 InGameLoadSlotIndex = AuraGameInstance->LoadSlotIndex;
 	AuraGameInstance->PlayerStartTag = SaveObject->PlayerStartTag;
@@ -72,10 +73,9 @@ void AAuraGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
 {
 	const FString SlotName = Slot->GetLoadSlotName();
 	const int32 SlotIndex = Slot->SlotIndex;
-	
+
 	UGameplayStatics::OpenLevelBySoftObjectPtr(Slot, Maps.FindChecked(Slot->GetMapName()));
 }
-
 
 AActor* AAuraGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 {

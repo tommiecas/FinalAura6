@@ -10,8 +10,7 @@ void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 {
 	FGameplayEffectSpecHandle DamageSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffectClass, 1.f);
 	const float ScaledDamage = Damage.GetValueAtLevel(GetAbilityLevel());
-	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageSpecHandle, DamageType, ScaledDamage); 
-	
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageSpecHandle, DamageType, ScaledDamage);
 	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(), UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
 }
 
@@ -46,13 +45,13 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassD
 		if (!bOverrideKnockbackDirection)
 		{
 			Params.KnockbackForce = ToTarget * KnockbackMagnitude;
-
 		}
 		if (!bOverrideDeathImpulse)
 		{
 			Params.DeathImpulse = ToTarget * DeathImpulseMagnitude;
 		}
 	}
+	
 	
 	if (bOverrideKnockbackDirection)
 	{
@@ -103,4 +102,3 @@ FTaggedMontage UAuraDamageGameplayAbility::GetRandomTaggedMontageFromArray(const
 
 	return FTaggedMontage();
 }
-

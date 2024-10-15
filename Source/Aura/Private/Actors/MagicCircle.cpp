@@ -23,4 +23,3 @@ void AMagicCircle::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-

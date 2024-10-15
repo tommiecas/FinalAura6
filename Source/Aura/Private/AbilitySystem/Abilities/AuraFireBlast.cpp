@@ -90,6 +90,7 @@ TArray<AAuraFireBall*> UAuraFireBlast::SpawnFireBalls()
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(Location);
 		SpawnTransform.SetRotation(Rotator.Quaternion());
+		
 		AAuraFireBall* FireBall = GetWorld()->SpawnActorDeferred<AAuraFireBall>(
 			FireBallClass,
 			SpawnTransform,
@@ -104,13 +105,10 @@ TArray<AAuraFireBall*> UAuraFireBlast::SpawnFireBalls()
 		FireBall->ExplosionDamageParams = MakeDamageEffectParamsFromClassDefaults();
 		FireBall->SetOwner(GetAvatarActorFromActorInfo());
 
-
-
 		FireBalls.Add(FireBall);
 
 		FireBall->FinishSpawning(SpawnTransform);
-
 	}
+	
 	return FireBalls;
-
 }

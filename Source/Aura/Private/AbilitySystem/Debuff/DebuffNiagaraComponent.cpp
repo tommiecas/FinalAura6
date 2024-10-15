@@ -2,22 +2,23 @@
 
 
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
-#include "AbilitySystemComponent.h"
+
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "Interactions/CombatInterface.h"
+
 
 UDebuffNiagaraComponent::UDebuffNiagaraComponent()
 {
 	bAutoActivate = false;
-	
 }
 
 void UDebuffNiagaraComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetOuter());
-	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner());
-	if (ASC)
+
+	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetOwner());
+	if (UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner()))
 	{
 		ASC->RegisterGameplayTagEvent(DebuffTag, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &UDebuffNiagaraComponent::DebuffTagChanged);
 	}
@@ -25,7 +26,7 @@ void UDebuffNiagaraComponent::BeginPlay()
 	{
 		CombatInterface->GetOnASCRegisteredDelegate().AddWeakLambda(this, [this](UAbilitySystemComponent* InASC)
 		{
-			InASC->RegisterGameplayTagEvent(DebuffTag, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &UDebuffNiagaraComponent::DebuffTagChanged);	
+			InASC->RegisterGameplayTagEvent(DebuffTag, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &UDebuffNiagaraComponent::DebuffTagChanged);
 		});
 	}
 }
@@ -34,7 +35,7 @@ void UDebuffNiagaraComponent::DebuffTagChanged(const FGameplayTag CallbackTag, i
 {
 	const bool bOwnerValid = IsValid(GetOwner());
 	const bool bOwnerAlive = GetOwner()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(GetOwner());
-
+	
 	if (NewCount > 0 && bOwnerValid && bOwnerAlive)
 	{
 		Activate();
@@ -43,9 +44,4 @@ void UDebuffNiagaraComponent::DebuffTagChanged(const FGameplayTag CallbackTag, i
 	{
 		Deactivate();
 	}
-}
-
-void UDebuffNiagaraComponent::OnOwnerDeath(AActor* DeadActor)
-{
-	Deactivate();
 }

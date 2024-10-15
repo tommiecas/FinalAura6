@@ -15,8 +15,8 @@ UCLASS()
 class AURA_API UAuraDamageGameplayAbility : public UAuraGameplayAbility
 {
 	GENERATED_BODY()
-
 public:
+
 	UFUNCTION(BlueprintCallable)
 	void CauseDamage(AActor* TargetActor);
 
@@ -34,6 +34,7 @@ public:
 	UFUNCTION(BlueprintPure)
 	float GetDamageAtLevel() const;
 protected:
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 
@@ -72,10 +73,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
 	float RadialDamageOuterRadius = 0.f;
-
-	
 	
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetRandomTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages) const;
-	
 };
