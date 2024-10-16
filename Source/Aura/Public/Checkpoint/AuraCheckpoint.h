@@ -29,6 +29,12 @@ public:
 	UPROPERTY(BlueprintReadOnly, SaveGame)
 	bool bReached = false;
 
+	UPROPERTY(EditAnywhere)
+	bool bBindOverlapCallback = true;
+
+	UFUNCTION(BlueprintCallable)
+	void HandleGlowEffects();
+	
 protected:
 	UFUNCTION()
 	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -45,9 +51,7 @@ protected:
 	TObjectPtr<USceneComponent> MoveToComponent;
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void CheckpointReached(UMaterialInstanceDynamic* DynamicMaterialInstance);\
-
-	void HandleGlowEffects();
+	void CheckpointReached(UMaterialInstanceDynamic* DynamicMaterialInstance);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent> CheckpointMesh;
