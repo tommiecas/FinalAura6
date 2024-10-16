@@ -151,7 +151,7 @@ protected:
 	USoundBase* DeathSound;
 
 	/* Minions */
-	int32 MinionCount = 0;
+	int32 MinionCount = 8;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;

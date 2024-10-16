@@ -1,7 +1,7 @@
 // Copyright Gravity Well Games
 
 
-#include "Checkpoint/AuraCheckpoint.h"
+#include "Checkpoints/AuraCheckpoint.h"
 
 #include "Aura/Aura.h"
 #include "Components/SphereComponent.h"
@@ -70,8 +70,11 @@ void AAuraCheckpoint::SetMoveToLocation_Implementation(FVector& OutDestination)
 
 void AAuraCheckpoint::HighlightActor_Implementation()
 {
-	CheckpointMesh->SetRenderCustomDepth(true);
-}
+	if (!bReached)
+	{
+		CheckpointMesh->SetRenderCustomDepth(true);
+	}
+}	
 
 void AAuraCheckpoint::UnHighlightActor_Implementation()
 {
