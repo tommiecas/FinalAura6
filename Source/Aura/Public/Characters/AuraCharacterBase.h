@@ -77,11 +77,12 @@ public:
 	UFUNCTION()
 	virtual void OnRep_Burned();
 	
-
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float BaseWalkSpeed = 600.f;
+
+	void SetCharacterClass(ECharacterClass InClass) { CharacterClass = InClass; }
 	
 protected:
 	virtual void BeginPlay() override;

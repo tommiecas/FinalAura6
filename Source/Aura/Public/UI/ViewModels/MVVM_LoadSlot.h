@@ -36,6 +36,9 @@ public:
 	UPROPERTY()
 	FName PlayerStartTag;
 
+	UPROPERTY()
+	FName MapAssetName;
+
 	/** Field Notifies */
 	
 
