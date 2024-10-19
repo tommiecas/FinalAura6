@@ -39,6 +39,8 @@ AAuraEnemy::AAuraEnemy()
 	Weapon->MarkRenderStateDirty();
 	
 	BaseWalkSpeed = 250.f;
+
+	Tags.Add("Enemy");
 }
 
 void AAuraEnemy::PossessedBy(AController* NewController)

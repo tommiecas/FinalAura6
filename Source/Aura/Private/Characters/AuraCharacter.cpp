@@ -47,6 +47,8 @@ AAuraCharacter::AAuraCharacter()
 	bUseControllerRotationYaw = false;
 
 	CharacterClass = ECharacterClass::Elementalist;
+
+	Tags.Add("Player");
 }
 
 void AAuraCharacter::PossessedBy(AController* NewController)
