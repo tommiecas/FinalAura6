@@ -149,9 +149,9 @@ public:
 	FGameplayAttributeData ArcaneResistance;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, ArcaneResistance);
 	
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_PhysicalResistance, Category = "Resistance Attributes")
-	FGameplayAttributeData PhysicalResistance;
-	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, PhysicalResistance);
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_InjuryResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData InjuryResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, InjuryResistance);
 
 	/*
 	 * Vital Attributes
@@ -236,7 +236,7 @@ public:
 	void OnRep_ArcaneResistance(const FGameplayAttributeData& OldArcaneResistance) const;
 
 	UFUNCTION()
-	void OnRep_PhysicalResistance(const FGameplayAttributeData& OldPhysicalResistance) const;
+	void OnRep_InjuryResistance(const FGameplayAttributeData& OldInjuryResistance) const;
 
 private:
 	void HandleIncomingDamage(const FEffectProperties& Props);

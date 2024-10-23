@@ -52,11 +52,11 @@ public:
 	FGameplayTag Attributes_Resistances_Fire;
 	FGameplayTag Attributes_Resistances_Lightning;
 	FGameplayTag Attributes_Resistances_Arcane;
-	FGameplayTag Attributes_Resistances_Physical;
+	FGameplayTag Attributes_Resistances_Injury;
 
 	FGameplayTag Debuff_Burn;
 	FGameplayTag Debuff_Stun;
-	FGameplayTag Debuff_Wounded;
+	FGameplayTag Debuff_Injured;
 	FGameplayTag Debuff_Damned;
 
 	FGameplayTag Debuff_Chance;
