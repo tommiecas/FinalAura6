@@ -90,34 +90,43 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	 * Input Tags (Mouse and Keyboard)
 	 */
 	
-	GameplayTags.InputTag_AbilityLeft = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("InputTag.AbilityLeft"),
+	GameplayTags.InputTag_Ability_Left = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Ability.Left"),
 		FString("Input Tag for the Left Mouse Button (when using a mouse and keyboard), or the Left Shoulder Trigger (when using a gamepad controller)")
 		);
 
-	GameplayTags.InputTag_AbilityRight = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("InputTag.AbilityRight"),
+	GameplayTags.InputTag_Ability_Right = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Ability.Right"),
 		FString("Input Tag for the Right Mouse Button (when using a mouse and keyboard), or the Right Shoulder Trigger (when using a gamepad controller)")
 		);
 
-	GameplayTags.InputTag_Ability1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("InputTag.Ability1"),
+	GameplayTags.InputTag_Ability_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Ability.1"),
 		FString("Input Tag for the '1' Key (when using a mouse and keyboard), or the 'Up' button on the left-hand-side D-Pad (when using a gamepad controller)")
 		);
 
-	GameplayTags.InputTag_Ability2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("InputTag.Ability2"),
+	GameplayTags.InputTag_Ability_2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Ability.2"),
 		FString("Input Tag for the '2' Key (when using a mouse and keyboard), or the 'Down' button on the left-hand-side D-Pad (when using a gamepad controller)")
 		);
 
-	GameplayTags.InputTag_Ability3 = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("InputTag.Ability3"),
+	GameplayTags.InputTag_Ability_3 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Ability.3"),
 		FString("Input Tag for the '3' Key (when using a mouse and keyboard), or the 'Left' button on the left-hand-side D-Pad (when using a gamepad controller)")
 		);
 
-	GameplayTags.InputTag_Ability4 = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("InputTag.Ability4"),
+	GameplayTags.InputTag_Ability_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Ability.4"),
 		FString("Input Tag for the '4' Key (when using a mouse and keyboard), or the 'Right' button on the left-hand-side D-Pad (when using a gamepad controller)")
+		);
+
+	GameplayTags.InputTag_Passive_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Passive.1"),
+		FString("Grants the User the Ability to obtain their first Passive Spell")
+		);
+	GameplayTags.InputTag_Passive_2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Passive.2"),
+		FString("Grants the User the Ability to obtain their second Passive Spell")
 		);
 
 

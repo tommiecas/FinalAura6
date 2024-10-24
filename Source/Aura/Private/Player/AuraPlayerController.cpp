@@ -145,7 +145,7 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 	{
 		return;
 	}
-	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_AbilityLeft))
+	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_Ability_Left))
 	{
 		TargetingStatus = ThisActor->Implements<UEnemyInterface>() ? ETargetingStatus::TargetingEnemy : ETargetingStatus::TargetingNonEnemy;
 		bAutoRunning = false;
@@ -163,7 +163,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	{
 		return;
 	}
-	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_AbilityLeft))
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_Ability_Left))
 	{
 		if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 		return;
@@ -210,7 +210,7 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	{
 		return;
 	}
-	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_AbilityLeft))
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_Ability_Left))
 	{
 		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 		return;

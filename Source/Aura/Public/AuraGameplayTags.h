@@ -36,12 +36,14 @@ public:
 	FGameplayTag Attributes_Meta_IncomingXP;
 	
 	
-	FGameplayTag InputTag_AbilityLeft;
-	FGameplayTag InputTag_AbilityRight;
-	FGameplayTag InputTag_Ability1;
-	FGameplayTag InputTag_Ability2;
-	FGameplayTag InputTag_Ability3;
-	FGameplayTag InputTag_Ability4;
+	FGameplayTag InputTag_Ability_Left;
+	FGameplayTag InputTag_Ability_Right;
+	FGameplayTag InputTag_Ability_1;
+	FGameplayTag InputTag_Ability_2;
+	FGameplayTag InputTag_Ability_3;
+	FGameplayTag InputTag_Ability_4;
+	FGameplayTag InputTag_Passive_1;
+	FGameplayTag InputTag_Passive_2;
 
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
@@ -83,7 +85,6 @@ public:
 	FGameplayTag Abilities_Lightning_Electrocute;
 	FGameplayTag Abilities_Arcane_ArcaneShards;
 	
-
 	FGameplayTag Abilities_Passive_HaloOfProtection;
 	FGameplayTag Abilities_Passive_LifeSiphon;
 	FGameplayTag Abilities_Passive_ManaSiphon;
