@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BlueprintActionMenuBuilder.h"
 #include "Characters/AuraCharacterBase.h"
 #include "Interactions/EnemyInterface.h"
 #include "Interactions/HighlightInterface.h"
@@ -61,6 +62,9 @@ protected:
 	virtual void InitializeDefaultAttributes() const override;
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, const int32 NewCount) override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnLoot();
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
 	
