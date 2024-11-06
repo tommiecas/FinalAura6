@@ -54,11 +54,11 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 	});
 }
 
-void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityTag)
+void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& TheAbilityTagVariable)
 {
 	if (bWaitingForEquipSelection)
 	{
-		const FGameplayTag SelectedAbilityType = AbilityInfo->FindAbilityInfoForTag(AbilityTag).AbilityType;
+		const FGameplayTag SelectedAbilityType = AbilityInfo->FindAbilityInfoForTag(TheAbilityTagVariable).AbilityType;
 		StopWaitingForEquipDelegate.Broadcast(SelectedAbilityType);
 		bWaitingForEquipSelection = false;
 	}
@@ -67,9 +67,9 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 	const int32 SpellPoints = GetAuraPS()->GetSpellPoints();
 	FGameplayTag AbilityStatus;	
 	
-	const bool bTagValid = AbilityTag.IsValid();
-	const bool bTagNone = AbilityTag.MatchesTag(GameplayTags.Abilities_None);
-	const FGameplayAbilitySpec* AbilitySpec = GetAuraASC()->GetSpecFromAbilityTag(AbilityTag);
+	const bool bTagValid = TheAbilityTagVariable.IsValid();
+	const bool bTagNone = TheAbilityTagVariable.MatchesTag(GameplayTags.Abilities_None);
+	const FGameplayAbilitySpec* AbilitySpec = GetAuraASC()->GetSpecFromAbilityTag(TheAbilityTagVariable);
 	const bool bSpecValid = AbilitySpec != nullptr;
 	if (!bTagValid || bTagNone || !bSpecValid)
 	{
@@ -80,14 +80,14 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 		AbilityStatus = GetAuraASC()->GetStatusFromSpec(*AbilitySpec);
 	}
 
-	SelectedAbility.Ability = AbilityTag;
+	SelectedAbility.Ability = TheAbilityTagVariable;
 	SelectedAbility.Status = AbilityStatus;
 	bool bEnableSpendPoints = false;
 	bool bEnableEquip = false;
 	ShouldEnableButtons(AbilityStatus, SpellPoints, bEnableSpendPoints, bEnableEquip);
 	FString Description;
 	FString NextLevelDescription;
-	GetAuraASC()->GetDescriptionsByAbilityTag(AbilityTag, Description, NextLevelDescription);
+	GetAuraASC()->GetDescriptionsByAbilityTag(TheAbilityTagVariable, Description, NextLevelDescription);
 	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip, Description, NextLevelDescription);
 }
 

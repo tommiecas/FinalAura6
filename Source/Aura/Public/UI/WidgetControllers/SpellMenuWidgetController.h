@@ -46,7 +46,7 @@ public:
 	FSpellGlobeReassignedSignature SpellGlobeReassignedDelegate;
 
 	UFUNCTION(BlueprintCallable)
-	void SpellGlobeSelected(const FGameplayTag& AbilityTag);
+	void SpellGlobeSelected(const FGameplayTag& TheAbilityTagVariable);
 
 	UFUNCTION(BlueprintCallable)
 	void SpendPointButtonPressed();
